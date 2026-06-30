@@ -1,87 +1,37 @@
-# Opptra Discount Engine — Base Implementation
+# Discount Engine Application
 
-This is the base implementation for the Opptra FDE Intern assignment.
-Fork this repo, complete the tasks in the assignment brief, and submit your GitHub link + Loom.
+A robust React and Vite-based production application built to parse dataset constraints and dynamically calculate promotional rules.
 
-## Running locally
+## 🚀 Live Deployment
+Check out the live application hosted on Vercel:
+🔗 [Live Deployment Link](https://discount-engine-assignment-krishnahari1042-5727s-projects.vercel.app)
 
+## 🎥 Application Demo
+Watch the walkthrough video demonstrating the functionalities, file parsers, and edge cases:
+🔗 [Video Walkthrough Link](https://drive.google.com/file/d/1dDLsgAAlvZKBhBG1_IKGt--4bcU4thX-/view?usp=sharing)
+
+---
+
+## 🛠️ Features
+* **Dynamic Dataset Parsing:** Effortlessly upload and evaluate `.csv` or text data payloads.
+* **Natural Language Input:** Processes prompt parameters smoothly into functional calculation constraints.
+* **Interactive Data Grid:** Clean UI displaying evaluation tables and error logs instantaneously.
+* **Production-Ready Bundle:** Highly optimized builds compiled via Vite and Rollup.
+
+---
+
+## 💻 Tech Stack
+* **Frontend Library:** React (Functional Components, Hooks)
+* **Build Tool:** Vite v5
+* **Bundler & Compiler:** Rollup
+* **Deployment Platform:** Vercel
+
+---
+
+## 📦 Getting Started Locally
+
+Follow these steps to run the project on your local machine:
+
+### 1. Cloning the Repository
 ```bash
-npm install
-npm run dev
-```
-
-Open http://localhost:5173
-
-## Deploying
-
-```bash
-npm run build
-```
-
-Deploy the `dist/` folder to Vercel, Netlify, or any static host.
-The live deployment URL must be in your README before submission.
-
-## How to use
-
-1. Upload `sample-data/rules.csv` as the discount rules input
-2. Upload `sample-data/cart.csv` as the cart input
-3. Click **Calculate Discounts**
-
-## Project structure
-
-```
-src/
-  engine/
-    discountEngine.js   ← pure discount logic (no UI)
-    csvParser.js        ← CSV → typed objects
-  components/
-    CsvUploader.jsx     ← file upload area
-    DataTable.jsx       ← reusable table
-    ErrorBanner.jsx     ← parse error display
-  App.jsx               ← main UI + state
-  main.jsx              ← entry point
-
-sample-data/
-  rules.csv             ← sample discount rules
-  cart.csv              ← sample cart items
-```
-
-## CSV formats
-
-**rules.csv**
-
-| Column     | Type              | Example          |
-|------------|-------------------|------------------|
-| rule_id    | string            | RULE-01          |
-| scope      | brand \| platform | platform         |
-| applies_to | string            | Amazon India     |
-| type       | percentage \| flat| percentage       |
-| value      | number            | 15               |
-| stackable  | true \| false     | false            |
-
-**cart.csv**
-
-| Column     | Type   | Example      |
-|------------|--------|--------------|
-| item_id    | string | ITEM-01      |
-| product    | string | Cushion Cover|
-| brand      | string | Natura Casa  |
-| platform   | string | Amazon India |
-| base_price | number | 1299         |
-
-## Discount logic
-
-- When multiple non-stackable rules match an item, the one giving the **largest saving in rupees** is applied.
-- Rules marked `stackable: true` apply **on top of** the winning non-stackable rule.
-- If no rules match, the base price is returned with a "No offers available" note.
-
-## Expected results for the sample data
-
-| Item    | Base Price | Final Price | Reasoning                              |
-|---------|-----------|-------------|----------------------------------------|
-| ITEM-01 | Rs.1,299  | Rs.1,104    | Platform offer: 15% off (beats Rs.150) |
-| ITEM-02 | Rs.849    | Rs.629      | Brand offer: Rs.150 off + Platform 10% |
-| ITEM-03 | Rs.599    | Rs.509      | Platform offer: 15% off                |
-| ITEM-04 | Rs.2,499  | Rs.2,499    | No offers available                    |
-| ITEM-05 | Rs.449    | Rs.382      | Platform offer: 15% off                |
-| ITEM-06 | Rs.899    | Rs.809      | Platform offer: 10% off                |
+git clone [https://github.com/Hari-23-cpu/discount-engine-assignment.git](https://github.com/Hari-23-cpu/discount-engine-assignment.git)
