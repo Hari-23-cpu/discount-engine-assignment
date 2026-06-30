@@ -9,7 +9,7 @@ import { useState } from 'react'
 import CsvUploader from './components/CsvUploader.jsx'
 import DataTable from './components/DataTable.jsx'
 import ErrorBanner from './components/ErrorBanner.jsx'
-import Naturallanguageinput from './components/Naturallanguageinput.jsx'
+import Naturallanguageinput from './components/NaturalLanguageInput.jsx'
 import PdfUploader from './components/PdfUploader.jsx'
 import { parseRulesCSV, parseCartCSV } from './engine/csvParser.js'
 import { processCart, cartTotal } from './engine/discountEngine.js'
@@ -211,7 +211,7 @@ export default function App() {
             )}
             <div style={{ marginTop: '1rem', borderTop: '1px solid #eee', paddingTop: '1rem' }}>
             <div style={{ ...S.sectionTitle, borderBottom: '2px solid #131A48' }}>Add Rule via AI</div>
-            <Naturallanguageinput 
+            <NaturalLanguageInput 
                 onAddRule={(newRule) => {
                   setRules((prevRules) => [...prevRules, newRule])
                 }} 
