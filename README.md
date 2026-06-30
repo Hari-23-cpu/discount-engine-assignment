@@ -4,7 +4,7 @@ A robust React and Vite-based production application built to parse dataset cons
 
 ## 🚀 Live Deployment
 Check out the live application hosted on Vercel:
-🔗 [Live Deployment Link]((https://discount-engine-assignment-sandy.vercel.app))
+🔗 [Live Deployment Link](https://discount-engine-assignment-sandy.vercel.app)
 
 ## 🎥 Application Demo
 Watch the walkthrough video demonstrating the functionalities, file parsers, and edge cases:
