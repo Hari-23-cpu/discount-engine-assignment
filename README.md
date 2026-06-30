@@ -85,3 +85,4 @@ sample-data/
 | ITEM-04 | Rs.2,499  | Rs.2,499    | No offers available                    |
 | ITEM-05 | Rs.449    | Rs.382      | Platform offer: 15% off                |
 | ITEM-06 | Rs.899    | Rs.809      | Platform offer: 10% off                |
+ 
