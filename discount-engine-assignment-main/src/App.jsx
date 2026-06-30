@@ -9,6 +9,8 @@ import { useState } from 'react'
 import CsvUploader from './components/CsvUploader.jsx'
 import DataTable from './components/DataTable.jsx'
 import ErrorBanner from './components/ErrorBanner.jsx'
+import Naturallanguageinput from './components/Naturallanguageinput.jsx'
+import PdfUploader from './components/PdfUploader.jsx'
 import { parseRulesCSV, parseCartCSV } from './engine/csvParser.js'
 import { processCart, cartTotal } from './engine/discountEngine.js'
 
@@ -186,6 +188,19 @@ export default function App() {
               fileName={cartFileName}
             />
             <ErrorBanner errors={cartErrors} />
+            {/* Task 3: PDF Alternative Document Uploader */}
+            <PdfUploader 
+              label="cart.pdf"
+              description="Parse invoice tables directly from a PDF catalog"
+              hasData={cartItems.length > 0 && cartFileName.toLowerCase().endsWith('.pdf')}
+              fileName={cartFileName}
+              onCartReplace={(parsedItems, name) => {
+                setCartItems(parsedItems)
+                setCartFileName(name)
+                setCartErrors([])
+                setResults(null)
+              }}
+            />
             {cartItems.length > 0 && (
               <div style={{ marginTop: '0.75rem' }}>
                 <div style={{ fontSize: 11, color: '#888', marginBottom: 4 }}>
@@ -194,6 +209,14 @@ export default function App() {
                 <DataTable columns={CART_COLUMNS} rows={cartItems} />
               </div>
             )}
+            <div style={{ marginTop: '1rem', borderTop: '1px solid #eee', paddingTop: '1rem' }}>
+            <div style={{ ...S.sectionTitle, borderBottom: '2px solid #131A48' }}>Add Rule via AI</div>
+            <Naturallanguageinput 
+                onAddRule={(newRule) => {
+                  setRules((prevRules) => [...prevRules, newRule])
+                }} 
+              />
+            </div>
           </div>
         </div>
 
@@ -213,14 +236,32 @@ export default function App() {
           )}
         </div>
 
-        {/* Results */}
-        {results && (
+       {/* Results */}
+       {results && (
           <div style={S.section}>
             <div style={S.sectionTitle}>Cart Summary</div>
-            <DataTable columns={RESULTS_COLUMNS} rows={results} />
+            
+            {/* Note: We pass results.items now because results is an object */}
+            <DataTable columns={RESULTS_COLUMNS} rows={results.items} />
+            
+            {/* Task 1: Conditional Cart Offer Row */}
+            {results.cartDiscount && (
+              <div style={{ ...S.totalRow, borderTop: 'none', marginTop: '0.5rem', paddingTop: 0 }}>
+                <span style={{ ...S.totalLabel, color: '#1e5c2c', fontWeight: 600 }}>
+                  🎉 Cart offer ({results.cartDiscount.value}% off)
+                </span>
+                <span style={{ ...S.totalValue, color: '#1e5c2c', fontWeight: 600 }}>
+                  - Rs.{results.cartDiscount.amountSaved.toLocaleString('en-IN')}
+                </span>
+              </div>
+            )}
+
+            {/* Final Checked-out Total */}
             <div style={S.totalRow}>
-              <span style={S.totalLabel}>Cart Total</span>
-              <span style={S.totalValue}>Rs.{cartTotal(results).toLocaleString('en-IN')}</span>
+              <span style={S.totalLabel}>Final Cart Total</span>
+              <span style={S.totalValue}>
+                Rs.{results.finalCartTotal.toLocaleString('en-IN')}
+              </span>
             </div>
           </div>
         )}

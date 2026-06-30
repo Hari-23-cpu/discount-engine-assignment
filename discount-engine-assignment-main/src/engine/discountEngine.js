@@ -160,15 +160,69 @@ export function applyDiscounts(item, rules) {
 
 /**
  * Runs applyDiscounts across every item in the cart.
- * Returns an array of DiscountResult objects.
+ * Applies any qualifying cart-level offer as well.
+ * Returns:
+ * {
+ *   items: DiscountResult[],
+ *   cartDiscount: { ruleId, amountSaved, percentage } | null,
+ *   finalCartTotal: number
+ * }
  */
 export function processCart(cartItems, rules) {
-  return cartItems.map((item) => applyDiscounts(item, rules))
+  // Calculate item-level discounts first (baseline logic preserved)
+  const results = cartItems.map((item) => applyDiscounts(item, rules));
+
+  // Initial cart total after all item-level discounts
+  const initialCartTotal = results.reduce((sum, r) => sum + r.finalPrice, 0);
+
+  // Find any cart-level rules
+  const cartRules = rules.filter(
+    (rule) => rule.scope === 'cart' && typeof rule.minCartValue === 'number'
+  );
+
+  // Check for any valid cart rule (pick the one with the largest discount if multiple)
+  let cartDiscount = null;
+  let cartDiscountAmount = 0;
+  let selectedCartRule = null;
+
+  for (const rule of cartRules) {
+    if (initialCartTotal >= rule.minCartValue) {
+      const discountAmount = calculateDiscountAmount(initialCartTotal, rule);
+      if (discountAmount > cartDiscountAmount) {
+        cartDiscountAmount = discountAmount;
+        selectedCartRule = rule;
+      }
+    }
+  }
+
+  let finalCartTotal = initialCartTotal;
+  if (selectedCartRule) {
+    finalCartTotal = Math.round(initialCartTotal - cartDiscountAmount);
+    cartDiscount = {
+      ruleId: selectedCartRule.ruleId,
+      amountSaved: Math.round(cartDiscountAmount),
+      percentage: selectedCartRule.value,
+    };
+  }
+
+  return {
+    items: results,
+    cartDiscount,
+    finalCartTotal,
+  };
 }
 
 /**
  * Sums the final prices across all results.
+ * If given an array of DiscountResult, mimics baseline: sum of finalPrice.
+ * If given the object returned by processCart, returns finalCartTotal.
  */
 export function cartTotal(results) {
-  return results.reduce((sum, r) => sum + r.finalPrice, 0)
+  if (Array.isArray(results)) {
+    return results.reduce((sum, r) => sum + r.finalPrice, 0);
+  }
+  if (results && typeof results.finalCartTotal === "number") {
+    return results.finalCartTotal;
+  }
+  return 0;
 }
